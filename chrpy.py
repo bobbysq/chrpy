@@ -1,39 +1,35 @@
 class ChrpFile:
     def __init__(self, file):
+
+
         with open(file, 'rb') as f:
             data = f.read()
-            self.size = len(data)
-
-            self.chrp_version = int.from_bytes(data[0:4], 'little')
-
-            self.checksum = int.from_bytes(data[-4:],'little')
-            expected_checksum = 2**32 - 1 - sum(data[4:self.size-4])
-
-            if (expected_checksum != self.checksum):
-                raise InvalidChecksumException()
-    
-            num_tracks = int.from_bytes(data[4:6], 'little')
-            total_notes = 0
-            self.tracks = []
-    
-            for i in range(num_tracks):
-                addr = 6 + i * 2
-                track_len = int.from_bytes(data[addr:addr+2], 'little')
-                track_addr = total_notes + 6 + num_tracks * 2
-
-                self.tracks += [ChrpTrack(data, track_addr, track_len)]
-                total_notes += track_len
-
             f.close()
+
+        self.size = len(data)
+
+        self.chrp_version = int.from_bytes(data[0:4], 'little')
+
+        self.checksum = int.from_bytes(data[-4:],'little')
+        expected_checksum = 2**32 - 1 - sum(data[4:self.size-4])
+
+        if (expected_checksum != self.checksum):
+            raise InvalidChecksumException()
+    
+        num_tracks = int.from_bytes(data[4:6], 'little')
+        total_notes = 0
+        self.tracks = []
+    
+        for i in range(num_tracks):
+            addr = 6 + i * 2
+            track_len = int.from_bytes(data[addr:addr+2], 'little')
+            track_addr = total_notes + 6 + num_tracks * 2
+
+            self.tracks += [ChrpTrack(data, track_addr, track_len)]
+            total_notes += track_len
 
 
 class ChrpTrack:
-    def __init__(self):
-        self._notes = []
-
-    def __init__(self, notes):
-        self._notes = notes
-
     def __init__(self, data, start, length):
         self._notes = []
 
