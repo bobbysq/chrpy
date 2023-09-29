@@ -1,10 +1,11 @@
 class ChrpFile:
-    def __init__(self, file):
-
-
-        with open(file, 'rb') as f:
-            data = f.read()
-            f.close()
+    def __init__(self, input, mode='file'):
+        if mode == 'file':
+            with open(input, 'rb') as f:
+                data = f.read()
+                f.close()
+        elif mode == 'bytes':
+            data = input
 
         self.size = len(data)
 
