@@ -18,7 +18,7 @@ class ChrpFile:
         for i in range(num_tracks):
             addr = 6 + i * 2
             track_len = int.from_bytes(data[addr:addr+2], 'little')
-            track_addr = total_notes + 6 + num_tracks * 2
+            track_addr = total_notes * 12 + 6 + num_tracks * 2
 
             self.tracks += [ChrpTrack(data, track_addr, track_len)]
             total_notes += track_len
