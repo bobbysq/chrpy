@@ -1,12 +1,6 @@
 class ChrpFile:
-    def __init__(self, input, mode='file'):
-        if mode == 'file':
-            with open(input, 'rb') as f:
-                data = f.read()
-                f.close()
-        elif mode == 'bytes':
-            data = input
-
+    # TODO: Write proper setters for variables
+    def __init__(self, data):
         self.size = len(data)
 
         self.chrp_version = int.from_bytes(data[0:4], 'little')
@@ -84,3 +78,9 @@ class ChrpNote:
 
 class InvalidChecksumException(Exception):
     pass
+
+def from_file(filename):
+    with open(filename, 'rb') as f:
+        data = f.read()
+
+    return ChrpFile(data)
