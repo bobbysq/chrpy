@@ -1,6 +1,12 @@
 class ChrpFile:
     # TODO: Write proper setters for variables
+    # TODO: Write docstrings
     def __init__(self, data):
+        self.size: int
+        self.chrp_version: int
+        self.checksum: int
+        self.tracks: list[ChrpTrack]
+
         self.size = len(data)
 
         self.chrp_version = int.from_bytes(data[0:4], 'little')
@@ -26,6 +32,8 @@ class ChrpFile:
 
 class ChrpTrack:
     def __init__(self, data, start, length):
+        self._notes: list[ChrpNote]
+
         self._notes = []
 
         for i in range(start, start + length * 12, 12):
@@ -58,6 +66,11 @@ class ChrpTrack:
     
 class ChrpNote:
     def __init__(self):
+        self.note: int
+        self.vel: int
+        self.on: int
+        self.off: int
+
         self.note = 0
         self.vel = 0
         self.on = 0
