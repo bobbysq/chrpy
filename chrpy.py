@@ -1,7 +1,7 @@
 class ChrpFile:
     # TODO: Write proper setters for variables
     # TODO: Write docstrings
-    def __init__(self, data):
+    def __init__(self, data, single_track = None):
         self.size: int
         self.chrp_version: int
         self.checksum: int
@@ -26,7 +26,10 @@ class ChrpFile:
             track_len = int.from_bytes(data[addr:addr+2], 'little')
             track_addr = total_notes * 12 + 6 + num_tracks * 2
 
-            self.tracks += [ChrpTrack(data, track_addr, track_len)]
+            if single_track != None:
+                if i == single_track: self.tracks += [ChrpTrack(data, track_addr, track_len)]
+            else: 
+                self.tracks += [ChrpTrack(data, track_addr, track_len)]
             total_notes += track_len
 
 
@@ -92,8 +95,8 @@ class ChrpNote:
 class InvalidChecksumException(Exception):
     pass
 
-def from_file(filename):
+def from_file(filename, single_track = None):
     with open(filename, 'rb') as f:
         data = f.read()
 
-    return ChrpFile(data)
+    return ChrpFile(data, single_track = single_track)
