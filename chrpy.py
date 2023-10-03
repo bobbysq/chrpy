@@ -49,7 +49,7 @@ class ChrpTrack:
 
             self._notes += [new_note]
 
-    def __sizeof__(self) -> int:
+    def __len__(self) -> int:
         return len(self._notes)
     
     def __iter__(self):
